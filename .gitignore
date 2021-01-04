@@ -1,0 +1,12 @@
+# ignore vendor folder
+/vendor
+
+#ignore node module folder
+/node_modules
+
+#ignore package-lock file
+
+package-lock.json
+
+#ignore env file
+.env
