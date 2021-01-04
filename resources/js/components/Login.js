@@ -78,8 +78,8 @@ class Login extends Component {
     try{
     axios.post(API_URL + '/login', formData, { headers: headers })
       .then(response => {
-           
-        if (response.status == 200 && response.success == true) {
+           console.log('login=>',response);
+        if (response.status == 200 && response.data.success == true) {
 
           console.log('response => ', response);
           localStorage.setItem('ACCESS_TOKEN', response.data.data.token);
