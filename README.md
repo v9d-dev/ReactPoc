@@ -42,7 +42,7 @@ after installation run these command to run the project-
 
 ## Demo File Path
 
-- /demo/demo.mp4
+- https://user-images.githubusercontent.com/74781289/103547190-181f5900-4eca-11eb-8081-b9f9483f5a1b.mp4
 
 
 
