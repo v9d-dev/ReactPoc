@@ -14,7 +14,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { BrowserRouter, Route, Switch, NavLink, Redirect } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import SimpleReactValidator from 'simple-react-validator';
 
 import Header from './Header';
@@ -63,8 +63,7 @@ class Register extends Component {
   }
 
   handleSubmit(e) {
-    //e.preventDefault();
-    //alert('hiii');
+    
     let API_URL = localStorage.getItem('API_URL');
     let APP_URL = localStorage.getItem('APP_URL');
 
@@ -83,35 +82,41 @@ class Register extends Component {
     }
 
     if (!this.validator.allValid()) {
+
       this.validator.showMessages();
       this.forceUpdate();
       return false;
+
     }
 
     axios.post(API_URL + '/register', formData, { headers: headers })
       .then(response => {
-        //this.setState({loaded:true})
+        
         if (response.status == 200) {
+
           this.handelAlertMsg();
+
         } else {
 
           localStorage.setItem('ACCESS_TOKEN', "");
+
         }
       });
 
   }
 
   handleFieldChange(e) {
+
     let stateCopy = Object.assign({}, this.state);
     stateCopy[e.target.name] = e.target.value;
     this.setState(stateCopy);
+
   }
 
   handelAlertMsg() {
 
     let stateCopy = Object.assign({}, this.state);
     stateCopy['isSuccess'] = !this.state.isSuccess;
-
     this.setState(stateCopy);
 
   }
@@ -133,11 +138,12 @@ class Register extends Component {
 
   render() {
     const { classes } = this.props;
-    //console.log('status',this.state);
-
+    
     const access_token = localStorage.getItem('ACCESS_TOKEN');
     if (access_token != 'null' && typeof access_token != 'undefined' && access_token != 'null') {
+
       return <Redirect to="/list" />;
+
     }
 
     return (
@@ -236,15 +242,9 @@ class Register extends Component {
                   />
                   {this.validator.message('confirm_password', this.state.c_password, 'required|min:8', { className: 'text-danger' })}
                 </Grid>
-                {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
+               
               </Grid>
               <Button
-                //type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
@@ -289,17 +289,8 @@ class Register extends Component {
                 color="inherit"
               >
                 Ok
-        </Button>
-              {/* <Button
-          variant="contained"
-          onClick={() => {
-            setOpen();
-            onConfirm();
-          }}
-          color="default"
-        >
-          Yes
-        </Button> */}
+              </Button>
+              
             </DialogActions>
           </Dialog>
 

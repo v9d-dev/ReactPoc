@@ -73,15 +73,14 @@ class List extends Component {
       email: "",
       listData: [],
       deleteId: 0,
-      editData:{},
-      editId:0,
-      FormHeading:'Add',
-      isSuccess:false,
-      severity:"success",
-      alertMsg:""
+      editData: {},
+      editId: 0,
+      FormHeading: 'Add',
+      isSuccess: false,
+      severity: "success",
+      alertMsg: ""
     }
-    //this.handleClickOpen = this.handleClickOpen.bind(this);
-   // this.createData = this.createData.bind(this);
+
     this.handelAddEditModal = this.handelAddEditModal.bind(this);
     this.handleDeleteConfirm = this.handleDeleteConfirm.bind(this);
     this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -97,27 +96,31 @@ class List extends Component {
 
     let stateCopy = Object.assign({}, this.state);
     stateCopy['isAddEditModal'] = !this.state.isAddEditModal;
-    if(id != 'undefined' && id != "" && id > 0){
-      stateCopy['FormHeading'] = "Update";
-    }
-    this.setState(stateCopy,()=>{
+    if (id != 'undefined' && id != "" && id > 0) {
 
-      if(id != 'undefined' && id != "" && id > 0){
+      stateCopy['FormHeading'] = "Update";
+
+    }
+    this.setState(stateCopy, () => {
+
+      if (id != 'undefined' && id != "" && id > 0) {
+
         this.getEditData(id);
+
       }
       this.clearState();
     });
 
   }
 
-  handleCloseMsg(){
+  handleCloseMsg() {
 
     let stateCopy = Object.assign({}, this.state);
     stateCopy["isSuccess"] = false;
     this.setState(stateCopy);
   }
-  getEditData(editId){
-    //alert("id =>"+editId);
+  getEditData(editId) {
+
     let token = localStorage.getItem('ACCESS_TOKEN');
     let API_URL = localStorage.getItem('API_URL');
 
@@ -128,13 +131,14 @@ class List extends Component {
     }
 
 
-    axios.get(API_URL + '/student/'+editId, { headers: headers })
+    axios.get(API_URL + '/student/' + editId, { headers: headers })
       .then(response => {
-        //this.setState({loaded:true})
+
         if (response.status == 200) {
+
           let editData = response.data.data;
           let stateCopy = Object.assign({}, this.state);
-          
+
           stateCopy["first_name"] = editData.first_name;
           stateCopy["last_name"] = editData.last_name;
           stateCopy["phone"] = editData.phone;
@@ -143,7 +147,6 @@ class List extends Component {
           stateCopy["editId"] = editData.id
 
           this.setState(stateCopy);
-          //response.data.data
 
         }
       });
@@ -161,7 +164,7 @@ class List extends Component {
   handleAlertModal() {
     let stateCopy = Object.assign({}, this.state);
     stateCopy['isAlertModal'] = !this.state.isAlertModal;
-    this.setState(stateCopy),() =>{
+    this.setState(stateCopy), () => {
       handelAddEditModal(0);
       this.getListData();
     };
@@ -169,20 +172,17 @@ class List extends Component {
 
 
   handleFieldChange(e) {
-    //alert(e.target.value);
-    
+
     let stateCopy = Object.assign({}, this.state);
     stateCopy[e.target.name] = e.target.value;
     this.setState(stateCopy);
-   
+
   }
 
   handelSubmit(e) {
     e.preventDefault();
 
     let API_URL = localStorage.getItem('API_URL');
-    //let APP_URL = localStorage.getItem('APP_URL');
-
     let formData = {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
@@ -200,17 +200,19 @@ class List extends Component {
     }
 
     if (!this.validator.allValid()) {
+
       this.validator.showMessages();
       this.forceUpdate();
       return false;
+
     }
 
     if (this.state.editId != "undefined" && this.state.editId > 0) {
-      //formData.
+
       axios.patch(API_URL + '/student/' + this.state.editId, formData, { headers: headers })
         .then(response => {
           if (response.status == 200) {
-            //this.handleAlertModal();
+
             let stateCopy = Object.assign({}, this.state);
             stateCopy['alertMsg'] = "Student Update Successfully !";
             stateCopy['isSuccess'] = true
@@ -218,7 +220,7 @@ class List extends Component {
               this.handelAddEditModal();
               this.getListData();
               setTimeout(() => { this.setState({ isSuccess: false }) }, 4000);
-      
+
             });
           }
         });
@@ -228,7 +230,7 @@ class List extends Component {
       axios.post(API_URL + '/student', formData, { headers: headers })
         .then(response => {
           if (response.status == 201) {
-            // this.handleAlertModal();
+
             let stateCopy = Object.assign({}, this.state);
             stateCopy['alertMsg'] = "Student Add Successfully !";
             stateCopy['isSuccess'] = true
@@ -237,6 +239,7 @@ class List extends Component {
               this.getListData();
               setTimeout(() => { this.setState({ isSuccess: false }) }, 4000);
             });
+
           }
         });
 
@@ -258,7 +261,9 @@ class List extends Component {
     axios.delete(API_URL + '/student/' + this.state.deleteId, { headers: headers })
       .then(response => {
         if (response.status == 204) {
-            this.getListData();
+
+          this.getListData();
+
         }
       });
 
@@ -279,7 +284,7 @@ class List extends Component {
 
     axios.get(API_URL + '/student', { headers: headers })
       .then(response => {
-        //this.setState({loaded:true})
+
         if (response.status == 200) {
 
           let stateCopy = Object.assign({}, this.state);
@@ -291,20 +296,20 @@ class List extends Component {
 
   }
 
-  clearState(){
-    
-     let stateCopy = Object.assign({}, this.state);
-     stateCopy['first_name'] = "";
-     stateCopy['last_name'] = "";
-     stateCopy['email'] = "";
-     stateCopy['phone'] = "";
-     stateCopy['address'] = "";
-     stateCopy['editId'] = 0;
-     this.setState(stateCopy);
-     this.validator.hideMessages();
-     
-    
-    }
+  clearState() {
+
+    let stateCopy = Object.assign({}, this.state);
+    stateCopy['first_name'] = "";
+    stateCopy['last_name'] = "";
+    stateCopy['email'] = "";
+    stateCopy['phone'] = "";
+    stateCopy['address'] = "";
+    stateCopy['editId'] = 0;
+    this.setState(stateCopy);
+    this.validator.hideMessages();
+
+
+  }
 
   componentDidMount() {
 
@@ -312,41 +317,41 @@ class List extends Component {
   }
 
   render() {
-     console.log('state', this.state);
+    console.log('state', this.state);
     const { classes } = this.props;
     const data = this.state.listData;
     let i = 1;
     const access_token = localStorage.getItem('ACCESS_TOKEN');
     if (access_token == 'false' || access_token == 'undefined' || access_token == 'null' || access_token == "") {
+
       return <Redirect to="/login" />;
+
     }
- 
+
     return (
       <div>
         <Header />
         <Container component="main" >
 
-        {/* <Snackbar open={this.state.isSuccess} autoHideDuration={4000} onClose={this.handleCloseMsg}> */}
-       {this.state.isSuccess == true &&
-        <Alert onClose={this.handleCloseMsg} severity={this.state.severity}>
-          {this.state.alertMsg}
-        </Alert>
-        }
-       {/* </Snackbar> */}
+          {this.state.isSuccess == true &&
 
+            <Alert onClose={this.handleCloseMsg} severity={this.state.severity}>
+              {this.state.alertMsg}
+            </Alert>
+            
+          }
 
           <div className="App">
-
             <Button variant="outlined" className={this.props.classes.root} color="primary" onClick={() => this.handelAddEditModal(0)} modalAction="ADD" >
               Create Student
-      </Button>
+            </Button>
           </div>
 
           <Paper className={this.props.classes.root}>
             <Table className={this.props.classes.table}>
               <TableHead>
                 <TableRow>
-                  {/* <TableCell className={this.props.classes.tableCell}>#</TableCell> */}
+
                   <TableCell className={this.props.classes.tableCell}>First Name</TableCell>
                   <TableCell className={this.props.classes.tableCell}>Last Name</TableCell>
                   <TableCell className={this.props.classes.tableCell}>E-mail</TableCell>
@@ -360,7 +365,7 @@ class List extends Component {
 
                   return (
                     <TableRow key={n.id}>
-                      {/* <TableCell className={this.props.classes.tableCell}>{i}</TableCell> */}
+
                       <TableCell className={this.props.classes.tableCell}>{n.first_name}</TableCell>
                       <TableCell className={this.props.classes.tableCell}>{n.last_name}</TableCell>
                       <TableCell className={this.props.classes.tableCell}>{n.email}</TableCell>
@@ -397,7 +402,7 @@ class List extends Component {
                         value={this.state.first_name}
 
                       />
-                       {this.validator.message('first_name', this.state.first_name, 'required', { className: 'text-danger' })}
+                      {this.validator.message('first_name', this.state.first_name, 'required', { className: 'text-danger' })}
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
@@ -442,7 +447,7 @@ class List extends Component {
                         onChange={this.handleFieldChange}
                         value={this.state.phone}
                       />
-                       {this.validator.message('Contact_Number', this.state.phone, 'required|phone', { className: 'text-danger' })}
+                      {this.validator.message('Contact_Number', this.state.phone, 'required|phone', { className: 'text-danger' })}
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
@@ -475,7 +480,7 @@ class List extends Component {
                     </Button>
                   </DialogActions>
 
-                  
+
                 </form>
               </Container>
             </DialogContent>

@@ -3,10 +3,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { BrowserRouter, Route, Switch, NavLink, Redirect } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 
 
 
@@ -32,7 +31,6 @@ export default class Header extends Component {
         let API_URL = localStorage.getItem('API_URL');
         axios.get(API_URL + '/logout', { headers: headers })
             .then(response => {
-                // this.props.history.push('/');
                 if (response.status == 200) {
 
                     localStorage.setItem('ACCESS_TOKEN', null);
@@ -52,9 +50,6 @@ export default class Header extends Component {
     }
 
     render() {
-
-        //localStorage.setItem('ACCESS_TOKEN', null);
-        //localStorage.setItem('LOGIN_USER', null);
 
         const access_token = localStorage.getItem('ACCESS_TOKEN');
         let login_user = localStorage.getItem('LOGIN_USER');

@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import axios from 'axios';
-import { BrowserRouter, Route, Switch, NavLink, Redirect } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import Header from './Header';
 import SimpleReactValidator from 'simple-react-validator';
 
@@ -39,6 +39,7 @@ const styles = theme => ({
 
 
 class Login extends Component {
+
   constructor(props) {
     super(props);
     this.validator = new SimpleReactValidator();
@@ -54,8 +55,7 @@ class Login extends Component {
   }
 
   handleSubmit(e) {
-    //e.preventDefault();
-   // alert('hiii');
+    
     let API_URL = localStorage.getItem('API_URL');
     let APP_URL = localStorage.getItem('APP_URL');
 
@@ -70,32 +70,36 @@ class Login extends Component {
     }
 
     if (!this.validator.allValid()) {
+
       this.validator.showMessages();
       this.forceUpdate();
       return false;
+
     }
 
-    try{
-    axios.post(API_URL + '/login', formData, { headers: headers })
-      .then(response => {
-           console.log('login=>',response);
-        if (response.status == 200 && response.data.success == true) {
+    try {
+      axios.post(API_URL + '/login', formData, { headers: headers })
+        .then(response => {
+          console.log('login=>', response);
+          if (response.status == 200 && response.data.success == true) {
 
-          console.log('response => ', response);
-          localStorage.setItem('ACCESS_TOKEN', response.data.data.token);
-          localStorage.setItem('LOGIN_USER', response.data.data.userData.first_name + ' ' + response.data.data.userData.last_name);
-         
-          let stateCopy = Object.assign({}, this.state);
-          stateCopy['isLoggedIn'] = true;
-          this.setState(stateCopy);
+            console.log('response => ', response);
+            localStorage.setItem('ACCESS_TOKEN', response.data.data.token);
+            localStorage.setItem('LOGIN_USER', response.data.data.userData.first_name + ' ' + response.data.data.userData.last_name);
 
-        } else {
-          localStorage.setItem('ACCESS_TOKEN', null);
-          localStorage.setItem('LOGIN_USER', null);
-          alert('Invalid Username password!!');
-        }
-      });
-    }catch(err){
+            let stateCopy = Object.assign({}, this.state);
+            stateCopy['isLoggedIn'] = true;
+            this.setState(stateCopy);
+
+          } else {
+
+            localStorage.setItem('ACCESS_TOKEN', null);
+            localStorage.setItem('LOGIN_USER', null);
+            alert('Invalid Username password!!');
+
+          }
+        });
+    } catch (err) {
       console.error("Error response:");
       console.error(err.response.data);
       console.error(err.response.status);
@@ -113,14 +117,18 @@ class Login extends Component {
 
 
   render() {
-  
+
 
     if (this.state.isLoggedIn) {
+
       return <Redirect to="/list" />;
+
     }
     const access_token = localStorage.getItem('ACCESS_TOKEN');
     if (access_token != 'null' && typeof access_token != 'undefined' && access_token != 'null') {
+
       return <Redirect to="/list" />;
+
     }
 
     return (
@@ -165,12 +173,7 @@ class Login extends Component {
                 onChange={this.handleFieldChange}
               />
               {this.validator.message('password', this.state.password, 'required', { className: 'text-danger' })}
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
               <Button
-                // type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
@@ -180,19 +183,14 @@ class Login extends Component {
                 Sign In
           </Button>
               <Grid container>
-                {/* <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-              </Link>
-                </Grid> */}
-                 <Grid container justify="flex-end">
-            <Grid item>
-                  
-                  <NavLink to="/register" >
-                    {"Don't have an account? Sign Up"}
-                   </NavLink>
-                  
-                </Grid>
+                <Grid container justify="flex-end">
+                  <Grid item>
+
+                    <NavLink to="/register" >
+                      {"Don't have an account? Sign Up"}
+                    </NavLink>
+
+                  </Grid>
                 </Grid>
               </Grid>
             </form>

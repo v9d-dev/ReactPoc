@@ -22,16 +22,6 @@ const AlertDialog = (props) => {
         >
           Ok
         </Button>
-        {/* <Button
-          variant="contained"
-          onClick={() => {
-            setOpen();
-            onConfirm();
-          }}
-          color="default"
-        >
-          Yes
-        </Button> */}
       </DialogActions>
     </Dialog>
   );
