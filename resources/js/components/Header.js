@@ -16,10 +16,9 @@ export default class Header extends Component {
         this.state = {
             isRedirect: false
         }
-        this.logout = this.logout.bind(this);
     }
 
-    logout(e) {
+    logout = (e) => {
         e.preventDefault();
         let token = localStorage.getItem('ACCESS_TOKEN');
         const headers = {
@@ -32,20 +31,12 @@ export default class Header extends Component {
         axios.get(API_URL + '/logout', { headers: headers })
             .then(response => {
                 if (response.status == 200) {
-
                     localStorage.setItem('ACCESS_TOKEN', null);
                     localStorage.setItem('LOGIN_USER', null);
-
                     let stateCopy = Object.assign({}, this.state);
                     stateCopy['isRedirect'] = true;
                     this.setState(stateCopy);
-
                 }
-
-
-            })
-            .catch(error => {
-                // console.log(error);
             });
     }
 
@@ -58,19 +49,16 @@ export default class Header extends Component {
             return <Redirect to="/login" />;
         }
 
-
         return (
-            <div>
+            <>
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton edge="start" color="inherit" aria-label="menu">
-
                         </IconButton>
                         <Typography variant="h6" style={{ flex: 1 }}>
                             {((access_token != 'null' || typeof access_token != 'undefined') && login_user != 'null') ? 'Welcome '+login_user : 'POC'}
                         </Typography>
                         {(access_token != 'null' && typeof access_token != 'undefined' && access_token != 'null') &&
-
                             <Grid>
                                 <Button color="inherit" onClick={this.logout}>
                                     Logout
@@ -98,7 +86,7 @@ export default class Header extends Component {
                         }
                     </Toolbar>
                 </AppBar>
-            </div>
+            </>
         )
     }
 }

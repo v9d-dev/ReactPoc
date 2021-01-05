@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -54,19 +54,11 @@ class Register extends Component {
       mobile: "",
       isSuccess: false
     }
-
-    this.handleFieldChange = this.handleFieldChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handelAlertMsg = this.handelAlertMsg.bind(this);
-    this.clearState = this.clearState.bind(this);
-
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     
     let API_URL = localStorage.getItem('API_URL');
-    let APP_URL = localStorage.getItem('APP_URL');
-
     let formData = {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
@@ -85,44 +77,34 @@ class Register extends Component {
 
       this.validator.showMessages();
       this.forceUpdate();
+    
       return false;
-
     }
 
     axios.post(API_URL + '/register', formData, { headers: headers })
       .then(response => {
-        
         if (response.status == 200) {
-
           this.handelAlertMsg();
-
         } else {
-
           localStorage.setItem('ACCESS_TOKEN', "");
-
         }
       });
 
   }
 
-  handleFieldChange(e) {
-
+  handleFieldChange  = (e) => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy[e.target.name] = e.target.value;
     this.setState(stateCopy);
-
   }
 
-  handelAlertMsg() {
-
+  handelAlertMsg = () => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy['isSuccess'] = !this.state.isSuccess;
     this.setState(stateCopy);
-
   }
 
-  clearState() {
-
+  clearState = () => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy['first_name'] = "";
     stateCopy['last_name'] = "";
@@ -133,23 +115,18 @@ class Register extends Component {
     stateCopy['isSuccess'] = false;
     this.setState(stateCopy);
     document.getElementById("register-form").reset();
-
   }
 
   render() {
     const { classes } = this.props;
-    
     const access_token = localStorage.getItem('ACCESS_TOKEN');
     if (access_token != 'null' && typeof access_token != 'undefined' && access_token != 'null') {
-
       return <Redirect to="/list" />;
-
     }
 
     return (
-      <div>
-
-        <Header />
+      <>
+      <Header />
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={classes.paper}>
@@ -158,7 +135,7 @@ class Register extends Component {
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign up
-        </Typography>
+            </Typography>
             <form className={classes.form} id="register-form" noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
@@ -242,7 +219,6 @@ class Register extends Component {
                   />
                   {this.validator.message('confirm_password', this.state.c_password, 'required|min:8', { className: 'text-danger' })}
                 </Grid>
-               
               </Grid>
               <Button
                 fullWidth
@@ -252,14 +228,12 @@ class Register extends Component {
                 onClick={this.handleSubmit}
               >
                 Sign Up
-          </Button>
+              </Button>
               <Grid container justify="flex-end">
                 <Grid item>
-
                   <NavLink to="/login" >
-                    Already have an account? Sign in
-                </NavLink>
-
+                      Already have an account? Sign in
+                  </NavLink>
                 </Grid>
               </Grid>
             </form>
@@ -290,13 +264,10 @@ class Register extends Component {
               >
                 Ok
               </Button>
-              
             </DialogActions>
           </Dialog>
-
-
         </Container>
-      </div>
+      </>
     )
   }
 }

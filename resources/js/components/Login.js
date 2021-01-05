@@ -49,16 +49,11 @@ class Login extends Component {
       isLoggedIn: false
 
     };
-    this.handleFieldChange = this.handleFieldChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
-  handleSubmit(e) {
-    
+  handleSubmit = (e) => {
     let API_URL = localStorage.getItem('API_URL');
     let APP_URL = localStorage.getItem('APP_URL');
-
     let formData = {
       email: this.state.email,
       password: this.state.password
@@ -73,8 +68,8 @@ class Login extends Component {
 
       this.validator.showMessages();
       this.forceUpdate();
+    
       return false;
-
     }
 
     try {
@@ -86,7 +81,6 @@ class Login extends Component {
             console.log('response => ', response);
             localStorage.setItem('ACCESS_TOKEN', response.data.data.token);
             localStorage.setItem('LOGIN_USER', response.data.data.userData.first_name + ' ' + response.data.data.userData.last_name);
-
             let stateCopy = Object.assign({}, this.state);
             stateCopy['isLoggedIn'] = true;
             this.setState(stateCopy);
@@ -100,52 +94,41 @@ class Login extends Component {
           }
         });
     } catch (err) {
-      console.error("Error response:");
+      console.error("Error response from login API:");
       console.error(err.response.data);
       console.error(err.response.status);
     }
 
   }
 
-  handleFieldChange(e) {
+  handleFieldChange = (e) => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy[e.target.name] = e.target.value;
     this.setState(stateCopy);
   }
-
-
-
-
+  
   render() {
 
-
     if (this.state.isLoggedIn) {
-
       return <Redirect to="/list" />;
-
     }
     const access_token = localStorage.getItem('ACCESS_TOKEN');
     if (access_token != 'null' && typeof access_token != 'undefined' && access_token != 'null') {
-
       return <Redirect to="/list" />;
-
     }
 
     return (
-      <div>
-
-        <Header />
+      <>
+      <Header />
         <Container component="main" maxWidth="xs">
-
-
-          <CssBaseline />
+        <CssBaseline />
           <div className={this.props.classes.paper}>
             <Avatar className={this.props.classes.avatar}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
-        </Typography>
+            </Typography>
             <form className={this.props.classes.form} noValidate>
               <TextField
                 variant="outlined"
@@ -181,15 +164,13 @@ class Login extends Component {
                 onClick={this.handleSubmit}
               >
                 Sign In
-          </Button>
+              </Button>
               <Grid container>
                 <Grid container justify="flex-end">
                   <Grid item>
-
                     <NavLink to="/register" >
                       {"Don't have an account? Sign Up"}
                     </NavLink>
-
                   </Grid>
                 </Grid>
               </Grid>
@@ -207,7 +188,7 @@ class Login extends Component {
             </Typography>
           </Box>
         </Container>
-      </div>
+      </>
     )
   }
 }

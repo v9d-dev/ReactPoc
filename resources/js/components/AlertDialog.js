@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 const AlertDialog = (props) => {
-  const { title, children, open, setOpen, onConfirm } = props;
+  const { title, children, open, setOpen } = props;
   return (
     <Dialog
       open={open}

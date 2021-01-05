@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Container, Button, Snackbar } from '@material-ui/core'
+import { Grid, Container, Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,7 +15,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import ConfirmDialog from './ConfirmDialog';
 import AlertDialog from './AlertDialog';
 import { Redirect } from "react-router-dom";
@@ -80,47 +79,30 @@ class List extends Component {
       severity: "success",
       alertMsg: ""
     }
-
-    this.handelAddEditModal = this.handelAddEditModal.bind(this);
-    this.handleDeleteConfirm = this.handleDeleteConfirm.bind(this);
-    this.handleFieldChange = this.handleFieldChange.bind(this);
-    this.handleAlertModal = this.handleAlertModal.bind(this);
-    this.getListData = this.getListData.bind(this);
-    this.DeleteData = this.DeleteData.bind(this);
-    this.clearState = this.clearState.bind(this);
-    this.handelSubmit = this.handelSubmit.bind(this);
-    this.handleCloseMsg = this.handleCloseMsg.bind(this);
   }
 
-  handelAddEditModal(id) {
-
+  handelAddEditModal = (id) => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy['isAddEditModal'] = !this.state.isAddEditModal;
     if (id != 'undefined' && id != "" && id > 0) {
-
       stateCopy['FormHeading'] = "Update";
-
     }
     this.setState(stateCopy, () => {
 
       if (id != 'undefined' && id != "" && id > 0) {
-
-        this.getEditData(id);
-
+          this.getEditData(id);
       }
       this.clearState();
     });
-
   }
 
-  handleCloseMsg() {
-
+  handleCloseMsg = () => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy["isSuccess"] = false;
     this.setState(stateCopy);
   }
-  getEditData(editId) {
 
+  getEditData = (editId) => {
     let token = localStorage.getItem('ACCESS_TOKEN');
     let API_URL = localStorage.getItem('API_URL');
 
@@ -129,7 +111,6 @@ class List extends Component {
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + token
     }
-
 
     axios.get(API_URL + '/student/' + editId, { headers: headers })
       .then(response => {
@@ -145,23 +126,19 @@ class List extends Component {
           stateCopy["address"] = editData.address;
           stateCopy["email"] = editData.email;
           stateCopy["editId"] = editData.id
-
           this.setState(stateCopy);
-
         }
       });
-
   }
 
-  handleDeleteConfirm(id) {
-
+  handleDeleteConfirm = (id) => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy['isDeleteModal'] = !this.state.isDeleteModal;
     stateCopy['deleteId'] = id;
     this.setState(stateCopy);
   }
 
-  handleAlertModal() {
+  handleAlertModal = () => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy['isAlertModal'] = !this.state.isAlertModal;
     this.setState(stateCopy), () => {
@@ -171,15 +148,13 @@ class List extends Component {
   }
 
 
-  handleFieldChange(e) {
-
+  handleFieldChange = (e) => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy[e.target.name] = e.target.value;
     this.setState(stateCopy);
-
   }
 
-  handelSubmit(e) {
+  handelSubmit = (e) => {
     e.preventDefault();
 
     let API_URL = localStorage.getItem('API_URL');
@@ -189,7 +164,6 @@ class List extends Component {
       email: this.state.email,
       phone: this.state.phone,
       address: this.state.address,
-
     }
 
     let token = localStorage.getItem('ACCESS_TOKEN');
@@ -200,11 +174,10 @@ class List extends Component {
     }
 
     if (!this.validator.allValid()) {
-
       this.validator.showMessages();
       this.forceUpdate();
-      return false;
 
+      return false;
     }
 
     if (this.state.editId != "undefined" && this.state.editId > 0) {
@@ -246,8 +219,7 @@ class List extends Component {
     }
   }
 
-  DeleteData() {
-
+  DeleteData = () => {
     let token = localStorage.getItem('ACCESS_TOKEN');
     let API_URL = localStorage.getItem('API_URL');
 
@@ -256,22 +228,16 @@ class List extends Component {
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + token
     }
-
 
     axios.delete(API_URL + '/student/' + this.state.deleteId, { headers: headers })
       .then(response => {
         if (response.status == 204) {
-
-          this.getListData();
-
+            this.getListData();
         }
       });
-
-
   }
 
-  getListData() {
-
+  getListData = () => {
     let token = localStorage.getItem('ACCESS_TOKEN');
     let API_URL = localStorage.getItem('API_URL');
 
@@ -280,24 +246,19 @@ class List extends Component {
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + token
     }
-
-
+    
     axios.get(API_URL + '/student', { headers: headers })
       .then(response => {
 
         if (response.status == 200) {
-
           let stateCopy = Object.assign({}, this.state);
           stateCopy["listData"] = response.data.data;
           this.setState(stateCopy);
-
         }
-      });
-
+    });
   }
 
-  clearState() {
-
+  clearState = () => {
     let stateCopy = Object.assign({}, this.state);
     stateCopy['first_name'] = "";
     stateCopy['last_name'] = "";
@@ -307,12 +268,9 @@ class List extends Component {
     stateCopy['editId'] = 0;
     this.setState(stateCopy);
     this.validator.hideMessages();
-
-
   }
 
-  componentDidMount() {
-
+  componentDidMount = () => {
     this.getListData();
   }
 
@@ -323,22 +281,18 @@ class List extends Component {
     let i = 1;
     const access_token = localStorage.getItem('ACCESS_TOKEN');
     if (access_token == 'false' || access_token == 'undefined' || access_token == 'null' || access_token == "") {
-
       return <Redirect to="/login" />;
-
     }
 
     return (
       <div>
         <Header />
         <Container component="main" >
-
           {this.state.isSuccess == true &&
 
             <Alert onClose={this.handleCloseMsg} severity={this.state.severity}>
               {this.state.alertMsg}
             </Alert>
-            
           }
 
           <div className="App">
@@ -351,8 +305,7 @@ class List extends Component {
             <Table className={this.props.classes.table}>
               <TableHead>
                 <TableRow>
-
-                  <TableCell className={this.props.classes.tableCell}>First Name</TableCell>
+                <TableCell className={this.props.classes.tableCell}>First Name</TableCell>
                   <TableCell className={this.props.classes.tableCell}>Last Name</TableCell>
                   <TableCell className={this.props.classes.tableCell}>E-mail</TableCell>
                   <TableCell className={this.props.classes.tableCell}> Contact No.</TableCell>
@@ -362,11 +315,9 @@ class List extends Component {
               </TableHead>
               <TableBody>
                 {data.map(n => {
-
                   return (
                     <TableRow key={n.id}>
-
-                      <TableCell className={this.props.classes.tableCell}>{n.first_name}</TableCell>
+                    <TableCell className={this.props.classes.tableCell}>{n.first_name}</TableCell>
                       <TableCell className={this.props.classes.tableCell}>{n.last_name}</TableCell>
                       <TableCell className={this.props.classes.tableCell}>{n.email}</TableCell>
                       <TableCell className={this.props.classes.tableCell}>{n.phone}</TableCell>
@@ -374,116 +325,109 @@ class List extends Component {
                       <TableCell className={this.props.classes.tableCell}> <EditIcon onClick={() => this.handelAddEditModal(n.id)} modalAction="EDIT" editId={n.id} /> &nbsp;&nbsp;&nbsp;&nbsp;<DeleteIcon onClick={() => this.handleDeleteConfirm(n.id)} /></TableCell>
                     </TableRow>
                   );
-
                 })}
               </TableBody>
             </Table>
           </Paper>
 
-
           <Dialog open={this.state.isAddEditModal} onClose={() => this.handelAddEditModal(0)} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{this.state.FormHeading} Student</DialogTitle>
-
-            <DialogContent>
-              <Container component="main" maxWidth="xs">
-                <form className={classes.form} noValidate>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        autoComplete="fname"
-                        name="first_name"
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="first_name"
-                        label="First Name"
-                        autoFocus
-                        onChange={this.handleFieldChange}
-                        value={this.state.first_name}
-
-                      />
-                      {this.validator.message('first_name', this.state.first_name, 'required', { className: 'text-danger' })}
+              <DialogContent>
+                <Container component="main" maxWidth="xs">
+                  <form className={classes.form} noValidate>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          autoComplete="fname"
+                          name="first_name"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="first_name"
+                          label="First Name"
+                          autoFocus
+                          onChange={this.handleFieldChange}
+                          value={this.state.first_name}
+                        />
+                        {this.validator.message('first_name', this.state.first_name, 'required', { className: 'text-danger' })}
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="lastName"
+                          label="Last Name"
+                          name="last_name"
+                          autoComplete="lname"
+                          autoFocus
+                          onChange={this.handleFieldChange}
+                          value={this.state.last_name}
+                        />
+                        {this.validator.message('last_name', this.state.last_name, 'required', { className: 'text-danger' })}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                          autoFocus
+                          onChange={this.handleFieldChange}
+                          value={this.state.email}
+                        />
+                        {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="phone"
+                          label="Contact Number"
+                          name="phone"
+                          autoComplete="mobile"
+                          autoFocus
+                          onChange={this.handleFieldChange}
+                          value={this.state.phone}
+                        />
+                        {this.validator.message('Contact_Number', this.state.phone, 'required|phone', { className: 'text-danger' })}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="address"
+                          label="Address"
+                          id="address"
+                          autoComplete="current-address"
+                          autoFocus
+                          onChange={this.handleFieldChange}
+                          value={this.state.address}
+                        />
+                        {this.validator.message('Address', this.state.address, 'required', { className: 'text-danger' })}
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="lastName"
-                        label="Last Name"
-                        name="last_name"
-                        autoComplete="lname"
-                        autoFocus
-                        onChange={this.handleFieldChange}
-                        value={this.state.last_name}
-                      />
-                      {this.validator.message('last_name', this.state.last_name, 'required', { className: 'text-danger' })}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        onChange={this.handleFieldChange}
-                        value={this.state.email}
-                      />
-                      {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="phone"
-                        label="Contact Number"
-                        name="phone"
-                        autoComplete="mobile"
-                        autoFocus
-                        onChange={this.handleFieldChange}
-                        value={this.state.phone}
-                      />
-                      {this.validator.message('Contact_Number', this.state.phone, 'required|phone', { className: 'text-danger' })}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="address"
-                        label="Address"
-                        id="address"
-                        autoComplete="current-address"
-                        autoFocus
-                        onChange={this.handleFieldChange}
-                        value={this.state.address}
-                      />
-                      {this.validator.message('Address', this.state.address, 'required', { className: 'text-danger' })}
-                    </Grid>
 
-                  </Grid>
-
-                  <DialogActions>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      onClick={this.handelSubmit}
-                    >
-                      Submit
-                    </Button>
-                  </DialogActions>
-
-
-                </form>
-              </Container>
-            </DialogContent>
+                    <DialogActions>
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={this.handelSubmit}
+                      >
+                        Submit
+                      </Button>
+                    </DialogActions>
+                  </form>
+                </Container>
+              </DialogContent>
           </Dialog>
           <ConfirmDialog
             title="Delete Student?"
@@ -493,7 +437,6 @@ class List extends Component {
           >
             Are you sure you want to delete this Student?
           </ConfirmDialog>
-
           <AlertDialog
             title="Success"
             open={this.state.isAlertModal}
@@ -502,8 +445,6 @@ class List extends Component {
           >
             Successfully Added!!
           </AlertDialog>
-
-
         </Container>
       </div>
     )
