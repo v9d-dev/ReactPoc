@@ -18,8 +18,10 @@ class StudentController extends Controller
      */
     public function index()
     {
+
         $students = Student::all();
         return (new StudentResourceCollection($students))->response();
+
     }
 
     /**
@@ -38,9 +40,10 @@ class StudentController extends Controller
             'phone' => 'required|string',
         ]);
         $input = $request->all();
-
         $student = Student::create($input);
+
         return (new StudentResource($student))->response()->setStatusCode(Response::HTTP_CREATED);
+
     }
 
     /**
@@ -51,8 +54,9 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+
         return (new StudentResource($student))->response();
+
     }
 
     /**
@@ -77,6 +81,7 @@ class StudentController extends Controller
         $student->update($input);
 
         return (new StudentResource($student))->response()->setStatusCode(Response::HTTP_OK);
+
     }
 
     /**
@@ -87,7 +92,10 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
+
         $student->delete();
         return response($student, Response::HTTP_NO_CONTENT);
+
     }
 }
+

@@ -17,13 +17,9 @@ class CreateStudentTable extends Migration
             $table->bigIncrements('id');
             $table->string('first_name');
             $table->string('last_name');
-           // $table->string('full_name');
-            //$table->date('dob');
-            //$table->string('gender');
             $table->string('email');
             $table->string('phone');
             $table->string('address');
-           // $table->integer('zipcode');
             $table->tinyInteger('is_deleted')->default(0);
             $table->timestamps();
         });

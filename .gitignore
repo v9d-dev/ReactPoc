@@ -10,3 +10,6 @@ package-lock.json
 
 #ignore env file
 .env
+
+#ignore js file
+/public/js/app.js

@@ -16,6 +16,10 @@ generate passport key -
 - php artisan passport:keys
 - php artisan generate:key
 
+Fake filler for student data
+
+- php artisan db:seed --class=StudentsTableDataSeeder
+
 
 after installation run these command to run the project- 
 - php artisan serve 
